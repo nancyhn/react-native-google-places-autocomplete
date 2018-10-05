@@ -476,6 +476,7 @@ export default class GooglePlacesAutocomplete extends Component {
         }
       };
       request.open('GET', 'https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=' + encodeURIComponent(text) + '&' + Qs.stringify(this.props.query));
+      console.log('https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=' + encodeURIComponent(text) + '&' + Qs.stringify(this.props.query))
       if (this.props.query.origin !== null) {
          request.setRequestHeader('Referer', this.props.query.origin)
       }
@@ -690,12 +691,13 @@ export default class GooglePlacesAutocomplete extends Component {
               style={[defaultStyles.textInput, this.props.styles.textInput]}
               value={this.state.text}
               placeholder={this.props.placeholder}
-              selectionColor='white'
+              selectionColor= {this.props.selectionColor}
               placeholderTextColor={this.props.placeholderTextColor}
               onFocus={onFocus ? () => {this._onFocus(); onFocus()} : this._onFocus}
               onBlur={() => this.props.tfBlur() }
               clearButtonMode="while-editing"
               underlineColorAndroid={this.props.underlineColorAndroid}
+              onSubmitEditing={() => this.props.onSubmitEditing(this.state.text)}
               { ...userProps }
               onChangeText={this._handleChangeText}
             />
@@ -748,7 +750,9 @@ GooglePlacesAutocomplete.propTypes = {
   debounce: PropTypes.number,
   isRowScrollable: PropTypes.bool,
   text: PropTypes.string,
-  textInputHide: PropTypes.bool
+  textInputHide: PropTypes.bool,
+  selectionColor: PropTypes.string,
+  onSubmitEditing: PropTypes.func,
 }
 GooglePlacesAutocomplete.defaultProps = {
   placeholder: 'Search',
